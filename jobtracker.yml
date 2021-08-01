@@ -1,0 +1,28 @@
+- hosts: jobtracker
+  tasks:
+  - name: Copy jdk package
+    copy: 
+       src: /root/jdk-8u171-linux-x64.rpm 
+       dest: /root/jdk-8u171-linux-x64.rpm
+  
+  - name: Copy hadoop package  
+    copy:
+       src: /root/hadoop-1.2.1-1.x86_64.rpm 
+       dest: /root/hadoop-1.2.1-1.x86_64.rpm
+  
+  - name: Installing jdk package
+    command: rpm -iv /root/jdk-8u171-linux-x64.rpm --force
+    ignore_errors: yes    
+    
+ 
+  - name: Installing hadoop 
+    command: rpm -iv /root/hadoop-1.2.1-1.x86_64.rpm --force
+    ignore_errors: yes
+  
+  - name: Copy mapred-site.xml file
+    copy: 
+      src: /job-tracker/mapred-site.xml
+      dest: /etc/hadoop/ 
+  
+  - name: Starting job tracker 
+    command: hadoop-daemon.sh start jobtracker  
